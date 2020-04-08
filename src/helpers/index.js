@@ -25,7 +25,7 @@ const normaliseDurationToDays = ({ periodType, timeToElapse }) => {
 
 /**
  * @description Function to determine the number for generating the infectionsByRequestedTime
- * @param {*} data the input data object
+ * @param {Object} data the input data object
  * @returns {Number}
  */
 const determineNumberOfInfectionFactor = (data) => {
@@ -46,8 +46,30 @@ const bedSpaceByRequestedTimeComputation = (totalHospitalBeds, severeCases) => {
   return availableBedSpace - severeCases;
 };
 
+/**
+ * @description Function that computes the amount of dollars lost
+ * @param {Object} data
+ * @param {Number} infectionsByRequestedTime
+ * @returns {Number}
+ */
+const dollarsInFlightComputation = (data, infectionsByRequestedTime) => {
+  const dayPeriod = normaliseDurationToDays(data);
+  const {
+    region: {
+      avgDailyIncomeInUSD,
+      avgDailyIncomePopulation
+    }
+  } = data;
+
+  const dollarsInFlight = infectionsByRequestedTime * avgDailyIncomePopulation
+    * avgDailyIncomeInUSD * dayPeriod;
+
+  return dollarsInFlight;
+};
+
 export {
   normaliseDurationToDays,
   determineNumberOfInfectionFactor,
-  bedSpaceByRequestedTimeComputation
+  bedSpaceByRequestedTimeComputation,
+  dollarsInFlightComputation
 };

@@ -1,8 +1,14 @@
 import {
   determineNumberOfInfectionFactor,
-  bedSpaceByRequestedTimeComputation
+  bedSpaceByRequestedTimeComputation,
+  dollarsInFlightComputation
 } from './helpers';
 
+/**
+ * @description A novelty COVID-19 infections estimator function
+ * @param {Object} data
+ * @returns {Object}
+ */
 const covid19ImpactEstimator = (data) => {
   const {
     reportedCases,
@@ -28,7 +34,10 @@ const covid19ImpactEstimator = (data) => {
       hospitalBedsByRequestedTime:
         bedSpaceByRequestedTimeComputation(
           totalHospitalBeds, severeCasesByRequestedTime
-        )
+        ),
+      casesForICUByRequestedTime: 0.05 * infectionsByRequestedTime,
+      casesForVentilatorsByRequestedTime: 0.02 * infectionsByRequestedTime,
+      dollarsInFlight: dollarsInFlightComputation(data, infectionsByRequestedTime)
     },
     severeImpact: {
       currentlyInfected: severeImpactCurrentlyInfected,
@@ -37,7 +46,10 @@ const covid19ImpactEstimator = (data) => {
       hospitalBedsByRequestedTime:
         bedSpaceByRequestedTimeComputation(
           totalHospitalBeds, severeCasesByRequestedTimeForSevereImpact
-        )
+        ),
+      casesForICUByRequestedTime: 0.05 * severeImpactInfectionsByRequestedTime,
+      casesForVentilatorsByRequestedTime: 0.02 * severeImpactInfectionsByRequestedTime,
+      dollarsInFlight: dollarsInFlightComputation(data, severeImpactInfectionsByRequestedTime)
     }
   };
 };

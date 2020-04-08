@@ -26,6 +26,7 @@ const normaliseDurationToDays = ({ periodType, timeToElapse }) => {
 /**
  * @description Function to determine the number for generating the infectionsByRequestedTime
  * @param {*} data the input data object
+ * @returns {Number}
  */
 const determineNumberOfInfectionFactor = (data) => {
   const numberOfDays = normaliseDurationToDays(data);
@@ -34,7 +35,19 @@ const determineNumberOfInfectionFactor = (data) => {
   return 2 ** factor;
 };
 
+/**
+ * @description Function that computes the available bed space for severe patients
+ * @param {Number} totalHospitalBeds
+ * @param {Number} severeCases
+ * @returns {Number}
+ */
+const bedSpaceByRequestedTimeComputation = (totalHospitalBeds, severeCases) => {
+  const availableBedSpace = totalHospitalBeds * 0.35;
+  return availableBedSpace - severeCases;
+};
+
 export {
   normaliseDurationToDays,
-  determineNumberOfInfectionFactor
+  determineNumberOfInfectionFactor,
+  bedSpaceByRequestedTimeComputation
 };

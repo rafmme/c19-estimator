@@ -43,7 +43,7 @@ const determineNumberOfInfectionFactor = (data) => {
  */
 const bedSpaceByRequestedTimeComputation = (totalHospitalBeds, severeCases) => {
   const availableBedSpace = totalHospitalBeds * 0.35;
-  return availableBedSpace - severeCases;
+  return Number.parseInt(availableBedSpace - severeCases, 10);
 };
 
 /**
@@ -61,10 +61,10 @@ const dollarsInFlightComputation = (data, infectionsByRequestedTime) => {
     }
   } = data;
 
-  const dollarsInFlight = infectionsByRequestedTime * avgDailyIncomePopulation
-    * avgDailyIncomeInUSD * dayPeriod;
+  const dollarsInFlight = (infectionsByRequestedTime * avgDailyIncomePopulation
+    * avgDailyIncomeInUSD) / dayPeriod;
 
-  return dollarsInFlight;
+  return Number.parseInt(dollarsInFlight, 10);
 };
 
 export {

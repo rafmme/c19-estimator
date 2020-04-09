@@ -16,14 +16,18 @@ const covid19ImpactEstimator = (data) => {
   } = data;
   const factor = determineNumberOfInfectionFactor(data);
 
-  const currentlyInfected = reportedCases * 10;
-  const severeImpactCurrentlyInfected = reportedCases * 50;
+  const currentlyInfected = Number.parseInt(reportedCases * 10, 10);
+  const severeImpactCurrentlyInfected = Number.parseInt(reportedCases * 50, 10);
 
-  const infectionsByRequestedTime = currentlyInfected * factor;
-  const severeImpactInfectionsByRequestedTime = severeImpactCurrentlyInfected * factor;
+  const infectionsByRequestedTime = Number.parseInt(currentlyInfected * factor, 10);
+  const severeImpactInfectionsByRequestedTime = Number.parseInt(
+    severeImpactCurrentlyInfected * factor, 10
+  );
 
-  const severeCasesByRequestedTime = 0.15 * infectionsByRequestedTime;
-  const severeCasesByRequestedTimeForSevereImpact = 0.15 * severeImpactInfectionsByRequestedTime;
+  const severeCasesByRequestedTime = Number.parseInt(0.15 * infectionsByRequestedTime, 10);
+  const severeCasesByRequestedTimeForSevereImpact = Number.parseInt(
+    0.15 * severeImpactInfectionsByRequestedTime, 10
+  );
 
   return {
     data,
@@ -35,8 +39,8 @@ const covid19ImpactEstimator = (data) => {
         bedSpaceByRequestedTimeComputation(
           totalHospitalBeds, severeCasesByRequestedTime
         ),
-      casesForICUByRequestedTime: 0.05 * infectionsByRequestedTime,
-      casesForVentilatorsByRequestedTime: 0.02 * infectionsByRequestedTime,
+      casesForICUByRequestedTime: Number.parseInt(0.05 * infectionsByRequestedTime, 10),
+      casesForVentilatorsByRequestedTime: Number.parseInt(0.02 * infectionsByRequestedTime, 10),
       dollarsInFlight: dollarsInFlightComputation(data, infectionsByRequestedTime)
     },
     severeImpact: {
@@ -47,8 +51,12 @@ const covid19ImpactEstimator = (data) => {
         bedSpaceByRequestedTimeComputation(
           totalHospitalBeds, severeCasesByRequestedTimeForSevereImpact
         ),
-      casesForICUByRequestedTime: 0.05 * severeImpactInfectionsByRequestedTime,
-      casesForVentilatorsByRequestedTime: 0.02 * severeImpactInfectionsByRequestedTime,
+      casesForICUByRequestedTime: Number.parseInt(
+        0.05 * severeImpactInfectionsByRequestedTime, 10
+      ),
+      casesForVentilatorsByRequestedTime: Number.parseInt(
+        0.02 * severeImpactInfectionsByRequestedTime, 10
+      ),
       dollarsInFlight: dollarsInFlightComputation(data, severeImpactInfectionsByRequestedTime)
     }
   };
